@@ -461,7 +461,13 @@ function renderCalendar() {
     const grid = document.createElement('div');
     grid.className = 'days-grid';
 
-    week.days.forEach(day => {
+    // 전체 일정 탭: 지나간 날짜 제외
+    const visibleDays = (currentFilter === 'all')
+      ? week.days.filter(d => dateOrder.indexOf(d.date) >= todayIdx)
+      : week.days;
+    if (visibleDays.length === 0) return;
+
+    visibleDays.forEach(day => {
       const col = document.createElement('div');
       col.className = 'day-col' + (day.date === TODAY ? ' today' : '');
       const filtered = highlightOnly ? day.companies.filter(c => c.highlight) : day.companies;
